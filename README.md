@@ -14,3 +14,6 @@
 - [x] redux-thunk
 - [x] thunk
 - [x] react-redux
+- [x] formik
+- [x] yup
+

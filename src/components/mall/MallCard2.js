@@ -7,11 +7,11 @@ height: 400px;
 border: 2px solid purple;
 `
 
-const MallCard = props => {
+const MallCard2 = props => {
   return (
     <MallCardDiv>
-      <p>name</p>
+      <p>{props.name}</p>
     </MallCardDiv>
   );
 };
-export default MallCard;
+export default MallCard2;
