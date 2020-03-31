@@ -1,8 +1,8 @@
-# mall-build-frontend
+# Mall Build Frontend
 
 ## Notes
 - build a hamburger
-    - w/ material ui? 
+  
 
 ## Architecture
 - [x] cuid
