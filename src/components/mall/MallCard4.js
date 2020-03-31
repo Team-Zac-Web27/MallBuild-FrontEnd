@@ -1,17 +1,34 @@
 import React from "react";
-import styled from 'styled-components';
+import { Card, CardContent, Avatar } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
 
-const MallCardDiv = styled.div`
-width: 300px;
-height: 400px;
-border: 2px solid purple;
-`
+const useStyles = makeStyles({
+    root: {
+        border: "solid 1px purple",
+        width: "300px",
+        height: "400px",
+        fontSize: "3rem",
+        textAlign: "center"
+    },
+    Avatar:{
+        backgroundColor: "purple",
+        margin: " 2% auto "
+    }
+})
+
+
 
 const MallCard4 = props => {
-  return (
-    <MallCardDiv>
-      <p>{props.name}</p>
-    </MallCardDiv>
-  );
+    const classes = useStyles()
+
+    return (
+        <div>
+            <Card className={classes.root}>
+            <Avatar className={classes.Avatar}>DR</Avatar>
+                <CardContent>{props.name}</CardContent>
+            </Card>
+            </div>
+
+    );
 };
 export default MallCard4;
