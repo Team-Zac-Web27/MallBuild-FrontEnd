@@ -8,7 +8,8 @@ import MallCard4 from './MallCard4';
 const useStyles = makeStyles({
 cardContainer:{
     display:"flex",
-    flexWrap:'wrap'
+    flexWrap:'wrap',
+    justifyContent:"space-evenly"
 }
 })
 
@@ -16,7 +17,7 @@ const Dashboard = props => {
 const classes = useStyles()
     return(
         <div>
-        <p>Dashboard</p>
+        <p style={{textAlign:"center"}}>Dashboard</p>
         <div className={classes.cardContainer}>
         <MallCard1 name="juana"/>
         <MallCard2 name="mandi"/>
