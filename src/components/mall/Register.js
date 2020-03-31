@@ -8,9 +8,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
     root: {
-    
         width: '100%',
-     
         margin: 0,
         padding: 0,
         display: 'flex',
@@ -47,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 const MuiFormikTextField = ({ label, ...props }) => {
 
-    //material-ui with access to formik properties and methods
+    //material-ui/core/TextField access to formik properties and methods in this block usinf a usefield hook
     const [field, meta] = useField(props);
     return (
         <TextField 
@@ -62,6 +60,7 @@ const MuiFormikTextField = ({ label, ...props }) => {
 
 const Register = (props) => {
     const { isSubmitting, values, setValues } = props;
+
     const classes = useStyles();//styling
     
 
@@ -71,6 +70,7 @@ const Register = (props) => {
         setValues({ ...values,  showPassword: !values.showPassword });
     };
     
+    //this will prevent the password reveal from refreshing the page
     const handleMouseDownPassword = event => {
         event.preventDefault();
     };
@@ -125,7 +125,7 @@ const Register = (props) => {
 }
 
 const SignUp = withFormik({
-    // Initialize "formik states"
+    // Initialize formik state right here *firstname, last, email and password
     mapPropsToValues: () => ({
         firstName:'',
         lastName:'',
@@ -134,7 +134,8 @@ const SignUp = withFormik({
         password2: '',
         showPassword: false
     }),
-    // Create yup validation schema
+
+    // Create yup validation schema for formik's state right here
     validationSchema: yup.object().shape({
         firstName: yup.string()
             .required("first name is required"),
