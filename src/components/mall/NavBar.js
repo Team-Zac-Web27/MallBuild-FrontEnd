@@ -7,7 +7,7 @@ const NavBar = props => {
       <ul className="nav-buttons">
           <button>Home</button>
           <button>About Us</button>
-          <button><Link to="/register">Register</Link></button>
+          <button><Link to="/register" style={{textDecoration:"none", color:"black", fontSize:"2rem"}}>Register</Link></button>
           <button>Sign In</button>
       </ul>
     </div>
