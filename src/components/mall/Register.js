@@ -1,123 +1,156 @@
 import React from 'react';
-import { Card, CardHeader, TextField, Grid, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import { Link } from "react-router-dom"
+import { Form, withFormik, useField } from 'formik';
+import * as yup from 'yup';
+import { TextField, Button, Grid, makeStyles, Paper, Typography, InputAdornment, IconButton } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 
-const validateSignup = Yup.object().shape({
-    firstName: Yup.string().required('This is required'),
-    lastName: Yup.string().required('This is required'),
-    email: Yup.string()
-        .email('Invaild Email')
-        .required('This is required'),
-    password: Yup.string()
-        .min(8, 'Too short')
-        .max(100, 'Too long')
-        .required('This is required')
-});
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
-        fontSize: '2rem'
+    
+        width: '100%',
+     
+        margin: 0,
+        padding: 0,
+        display: 'flex',
+        justifyContent: 'center'
     },
-    Card: {
-        width: '40%',
-        margin: '0 auto',
-        textAlign: 'center',
-        padding: '3%'
+    paper: {
+        width: '100%',
+        marginTop: '50px',
+        padding: theme.spacing(2),
+        textAlign:"center"
+    },
+    fieldsContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center'
+    },
+    field: {
+        margin: '5px 0'
+    },
+    Button:{
+        margin: "0 auto"
+    },
+    Links:{
+       
+        fontSize:"2rem"
+    },
+    '@global': {
+        'html, body, #root': {
+            height: '100%'
+        }
     }
-});
+  }));
 
-const Register = () => {
-    const classes = useStyles();
+const MuiFormikTextField = ({ label, ...props }) => {
+
+    //material-ui with access to formik properties and methods
+    const [field, meta] = useField(props);
+    return (
+        <TextField 
+            {...field}
+            {...props}
+            label={label}
+            error={meta.error && meta.touched}
+            helperText={ (meta.error && meta.touched) && meta.error }
+        />         
+    )
+}
+
+const Register = (props) => {
+    const { isSubmitting, values, setValues } = props;
+    const classes = useStyles();//styling
+    
+
+    //this will handle the visiblity icon
+    const handleClickShowPassword = () => {
+        console.log(props);
+        setValues({ ...values,  showPassword: !values.showPassword });
+    };
+    
+    const handleMouseDownPassword = event => {
+        event.preventDefault();
+    };
 
     return (
-        <div className={classes.root}>
-            <Card className={classes.Card}>
-                <CardHeader title='Register' />
+        <Grid container className={classes.root} >
+            <Grid item lg={3} md={4} sm={6} xs={11} p={4}>
+            <Paper elevation={3} spacing={2} className={classes.paper}>
+                <Typography variant="h3" component="h1">
+                    Register
+                </Typography>
+                <Link to="/" className={classes.Links}>Have an account? Login here!</Link>
+                <Form width={500} autoComplete='off' className={classes.fieldsContainer}>
+                <MuiFormikTextField className={classes.field} type='text' label='Enter your first name' name='firstName' id='firstName' variant="outlined" />
 
-                <Formik
-                    initialValues={{
-                        firstName: '',
-                        lastName: '',
-                        email: '',
-                        password: ''
-                    }}
-                    validateSchema={validateSignup}
-                    onsubmit={(values, { setSubmitting }) => {
-                        setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2));
-                            setSubmitting(false);
-                        }, 400);
-                    }}>
-                    {/* {' '} */}
-                    {({ errors, touched, isSubmitting }) => (
-                        <React.Fragment>
-                            <Grid container spacing={2}>
-                                <form>
-                                    <Grid item xs={12} sm={12}>
-                                        <TextField
-                                            label='first name'
-                                            name='firstName'
-                                            type='text'
-                                            variant='outlined'
-                                        />
-                                        {errors.firstName &&
-                                        touched.firstName ? (
-                                            <div>{errors.firstName}</div>
-                                        ) : null}
-                                    </Grid>
 
-                                    <Grid item xs={12} sm={12}>
-                                        <TextField
-                                            label='Last name'
-                                            name='lastName'
-                                            type='text'
-                                            variant='outlined'
-                                        />
-                                        {errors.lastName && touched.lastName ? (
-                                            <div>{errors.lastName}</div>
-                                        ) : null}
-                                    </Grid>
+                <MuiFormikTextField className={classes.field} type='text' label='Enter your last name' name='lastName' id='lastName' variant="outlined"  />
 
-                                    <Grid item xs={12} sm={12}>
-                                        <TextField
-                                            label='email'
-                                            name='email'
-                                            type='text'
-                                            variant='outlined'
-                                        />
-                                        {errors.email && touched.email ? (
-                                            <div>{errors.email}</div>
-                                        ) : null}
-                                    </Grid>
 
-                                    <Grid item xs={12} sm={12}>
-                                        <TextField
-                                            label='password'
-                                            name='password'
-                                            type='text'
-                                            variant='outlined'
-                                        />
-                                        {errors.password && touched.password ? (
-                                            <div>{errors.password}</div>
-                                        ) : null}
-                                    </Grid>
+                    <MuiFormikTextField className={classes.field} type='email' label='Enter your Email' name='email' id='email' variant="outlined"  />
 
-                                    <Button
-                                        variant='contained'
-                                        type='submit'
-                                        disabled={isSubmitting}>
-                                        {' '}
-                                        Register
-                                    </Button>
-                                </form>
-                            </Grid>
-                        </React.Fragment>
-                    )}
-                </Formik>
-            </Card>
-        </div>
-    );
-};
-export default Register;
+                    <MuiFormikTextField 
+                        className={classes.field}
+                        name='password'
+                        id='password'
+                        type={values.showPassword ? 'text' : 'password'}
+                        label='Password' 
+                        variant="outlined" 
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
+                                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment> )
+                        }}     
+                    />
+                    <MuiFormikTextField 
+                        className={classes.field}
+                        name='password2'
+                        id='password2'
+                        type={values.showPassword ? 'text' : 'password'}
+                        label='Re-type your password'   
+                        variant="outlined" 
+                    />
+                    <Button disabled={isSubmitting} variant="contained" color="primary" type='submit' className={classes.Button}>Submit</Button>
+                </Form>
+            </Paper>
+            </Grid>
+        </Grid>
+    )
+}
+
+const SignUp = withFormik({
+    // Initialize "formik states"
+    mapPropsToValues: () => ({
+        firstName:'',
+        lastName:'',
+        email: '',
+        password: '',
+        password2: '',
+        showPassword: false
+    }),
+    // Create yup validation schema
+    validationSchema: yup.object().shape({
+        firstName: yup.string()
+            .required("first name is required"),
+            lastName: yup.string()
+            .required("last name is required"),
+        email: yup.string()
+            .email("Ivailded Email")
+            .required('Email is required'),
+        password: yup.string()
+            .min(8, 'Password must have at least 8 characters')
+            .required('Password required'),
+        password2: yup.string()
+            .oneOf([yup.ref('password'), null], 'Passwords must match')
+            .required('Password confirmation required')
+    }),
+    
+})(Register)
+
+export default SignUp
