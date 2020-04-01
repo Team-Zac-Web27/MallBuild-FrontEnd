@@ -31,4 +31,4 @@ const MallCard4 = props => {
 
     );
 };
-export default MallCard4;
+export default MallCard;
